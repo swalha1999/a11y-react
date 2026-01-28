@@ -12,7 +12,7 @@ export default defineConfig({
       },
     },
   ],
-  base: '/react-accessibility-widget/',
+  base: '/a16y-widget/',
   build: {
     outDir: '../docs',
     emptyOutDir: true,

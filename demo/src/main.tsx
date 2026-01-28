@@ -2,7 +2,7 @@ import React from 'react';
 import ReactDOM from 'react-dom/client';
 import App from './App';
 import './index.css';
-import { injectAccessibilityStyles } from 'react-accessibility-widget';
+import { injectAccessibilityStyles } from '@swalha1999/a16y-widget';
 
 // Inject the global accessibility styles
 injectAccessibilityStyles();
