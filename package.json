@@ -1,6 +1,6 @@
 {
   "name": "@swalha1999/a11y-react",
-  "version": "1.0.2",
+  "version": "1.0.3",
   "description": "An accessible, customizable, and i18n-ready accessibility widget for React",
   "main": "dist/index.js",
   "module": "dist/index.mjs",
