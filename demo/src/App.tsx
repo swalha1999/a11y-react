@@ -1,6 +1,6 @@
 import { useState } from 'react';
-import { AccessibilityWidget, en, ar } from '@swalha1999/a16y-widget';
-import type { AccessibilityTranslations } from '@swalha1999/a16y-widget';
+import { AccessibilityWidget, en, ar } from '@swalha1999/a11y-react';
+import type { AccessibilityTranslations } from '@swalha1999/a11y-react';
 
 type ThemeColor = '#6366f1' | '#10b981' | '#f59e0b' | '#ef4444' | '#8b5cf6';
 type Language = 'en' | 'ar';
@@ -38,7 +38,7 @@ function App() {
         </div>
         <div className="cta-buttons">
           <a
-            href="https://github.com/swalha1999/a16y-widget"
+            href="https://github.com/swalha1999/a11y-react"
             className="cta-button primary"
             target="_blank"
             rel="noopener noreferrer"
@@ -49,12 +49,12 @@ function App() {
             View on GitHub
           </a>
           <a
-            href="https://www.npmjs.com/package/@swalha1999/a16y-widget"
+            href="https://www.npmjs.com/package/@swalha1999/a11y-react"
             className="cta-button secondary"
             target="_blank"
             rel="noopener noreferrer"
           >
-            npm install @swalha1999/a16y-widget
+            npm install @swalha1999/a11y-react
           </a>
         </div>
       </header>
@@ -199,10 +199,10 @@ function App() {
             </p>
             <div className="code-block">
               <pre>{`// Install the package
-npm install @swalha1999/a16y-widget
+npm install @swalha1999/a11y-react
 
 // In your app
-import { AccessibilityWidget, en, injectAccessibilityStyles } from '@swalha1999/a16y-widget';
+import { AccessibilityWidget, en, injectAccessibilityStyles } from '@swalha1999/a11y-react';
 
 // Inject styles once at app root
 injectAccessibilityStyles();
@@ -226,7 +226,7 @@ function App() {
       {/* Footer */}
       <footer className="footer">
         <p>
-          Made with ❤️ | <a href="https://github.com/swalha1999/a16y-widget">GitHub</a> | MIT License
+          Made with ❤️ | <a href="https://github.com/swalha1999/a11y-react">GitHub</a> | MIT License
         </p>
       </footer>
 

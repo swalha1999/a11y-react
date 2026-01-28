@@ -1,4 +1,4 @@
-# @swalha1999/a16y-widget
+# @swalha1999/a11y-react
 
 A beautifully designed, accessible, and i18n-ready accessibility widget for React applications.
 
@@ -22,17 +22,17 @@ A beautifully designed, accessible, and i18n-ready accessibility widget for Reac
 ## Installation
 
 ```bash
-npm install @swalha1999/a16y-widget
+npm install @swalha1999/a11y-react
 # or
-yarn add @swalha1999/a16y-widget
+yarn add @swalha1999/a11y-react
 # or
-pnpm add @swalha1999/a16y-widget
+pnpm add @swalha1999/a11y-react
 ```
 
 ## Quick Start
 
 ```tsx
-import { AccessibilityWidget, en, injectAccessibilityStyles } from '@swalha1999/a16y-widget';
+import { AccessibilityWidget, en, injectAccessibilityStyles } from '@swalha1999/a11y-react';
 
 // Inject global styles once at app initialization
 injectAccessibilityStyles();
@@ -50,8 +50,8 @@ function App() {
 ## Usage with i18n
 
 ```tsx
-import { AccessibilityWidget, ar } from '@swalha1999/a16y-widget';
-import type { AccessibilityTranslations } from '@swalha1999/a16y-widget';
+import { AccessibilityWidget, ar } from '@swalha1999/a11y-react';
+import type { AccessibilityTranslations } from '@swalha1999/a11y-react';
 
 // Use built-in Arabic translations with RTL
 <AccessibilityWidget translations={ar} dir="rtl" />
@@ -130,7 +130,7 @@ const frTranslations: AccessibilityTranslations = {
 ### Custom Button Icon
 
 ```tsx
-import { AccessibilityWidget, en } from '@swalha1999/a16y-widget';
+import { AccessibilityWidget, en } from '@swalha1999/a11y-react';
 
 <AccessibilityWidget
   translations={en}
@@ -196,7 +196,7 @@ import { AccessibilityWidget, en } from '@swalha1999/a16y-widget';
 Build your own custom accessibility UI using the provided hooks:
 
 ```tsx
-import { useAccessibilitySettings, useReadingGuide } from '@swalha1999/a16y-widget';
+import { useAccessibilitySettings, useReadingGuide } from '@swalha1999/a11y-react';
 
 function MyCustomWidget() {
   const { settings, toggleSetting, resetSettings } = useAccessibilitySettings({
@@ -227,7 +227,7 @@ function MyCustomWidget() {
 If you prefer to include styles in your CSS build:
 
 ```tsx
-import { accessibilityStylesCSS } from '@swalha1999/a16y-widget';
+import { accessibilityStylesCSS } from '@swalha1999/a11y-react';
 
 // With styled-components
 const GlobalStyles = createGlobalStyle`
@@ -242,7 +242,7 @@ const GlobalStyles = createGlobalStyle`
 Use the exported icons for your own components:
 
 ```tsx
-import { AccessibilityIcon, GrayscaleIcon } from '@swalha1999/a16y-widget';
+import { AccessibilityIcon, GrayscaleIcon } from '@swalha1999/a11y-react';
 
 function MyComponent() {
   return (

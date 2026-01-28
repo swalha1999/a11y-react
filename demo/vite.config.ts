@@ -12,7 +12,7 @@ export default defineConfig({
       },
     },
   ],
-  base: '/a16y-widget/',
+  base: '/a11y-react/',
   build: {
     outDir: '../docs',
     emptyOutDir: true,

@@ -1,5 +1,5 @@
 {
-  "name": "@swalha1999/a16y-widget",
+  "name": "@swalha1999/a11y-react",
   "version": "1.0.2",
   "description": "An accessible, customizable, and i18n-ready accessibility widget for React",
   "main": "dist/index.js",
@@ -39,9 +39,9 @@
   ],
   "repository": {
     "type": "git",
-    "url": "https://github.com/swalha1999/a16y-widget"
+    "url": "https://github.com/swalha1999/a11y-react"
   },
-  "homepage": "https://swalha1999.github.io/a16y-widget",
+  "homepage": "https://swalha1999.github.io/a11y-react",
   "license": "MIT",
   "author": ""
 }
