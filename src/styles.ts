@@ -84,11 +84,6 @@ export function injectAccessibilityStyles(): void {
     }
 
     /* Reading guide line is created dynamically by the hook */
-
-    /* Smooth transitions for accessibility changes */
-    body:not(.a11y-invert):not(.a11y-grayscale) * {
-      transition: font-size 0.2s ease, line-height 0.2s ease, letter-spacing 0.2s ease;
-    }
   `;
 
   document.head.appendChild(style);
@@ -179,10 +174,5 @@ body.a11y-hide-images [role="img"],
 body.a11y-hide-images svg:not([class*="a11y"]) {
   opacity: 0 !important;
   pointer-events: none !important;
-}
-
-/* Smooth transitions for accessibility changes */
-body:not(.a11y-invert):not(.a11y-grayscale) * {
-  transition: font-size 0.2s ease, line-height 0.2s ease, letter-spacing 0.2s ease;
 }
 `;

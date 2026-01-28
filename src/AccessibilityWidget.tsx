@@ -33,8 +33,6 @@ export const AccessibilityWidget: React.FC<AccessibilityWidgetProps> = ({
   buttonAriaLabel,
 }) => {
   const [isOpen, setIsOpen] = useState(false);
-  const [hoveredItem, setHoveredItem] = useState<string | null>(null);
-  const [buttonHovered, setButtonHovered] = useState(false);
   const buttonRef = useRef<HTMLButtonElement>(null);
   const panelRef = useRef<HTMLDivElement>(null);
   const uniqueId = useId();
@@ -144,27 +142,6 @@ export const AccessibilityWidget: React.FC<AccessibilityWidgetProps> = ({
     return base;
   };
 
-  // Generate gradient from primary color
-  const lightenColor = (hex: string, percent: number): string => {
-    const num = parseInt(hex.replace('#', ''), 16);
-    const amt = Math.round(2.55 * percent);
-    const R = (num >> 16) + amt;
-    const G = ((num >> 8) & 0x00ff) + amt;
-    const B = (num & 0x0000ff) + amt;
-    return `#${(
-      0x1000000 +
-      (R < 255 ? (R < 1 ? 0 : R) : 255) * 0x10000 +
-      (G < 255 ? (G < 1 ? 0 : G) : 255) * 0x100 +
-      (B < 255 ? (B < 1 ? 0 : B) : 255)
-    )
-      .toString(16)
-      .slice(1)}`;
-  };
-
-  const darkenColor = (hex: string, percent: number): string => {
-    return lightenColor(hex, -percent);
-  };
-
   // Button styles
   const buttonStyle: CSSProperties = {
     ...getPositionStyles(),
@@ -173,23 +150,17 @@ export const AccessibilityWidget: React.FC<AccessibilityWidgetProps> = ({
     border: 'none',
     borderRadius: '50%',
     cursor: 'pointer',
-    transition: 'all 0.4s cubic-bezier(0.34, 1.56, 0.64, 1)',
     zIndex,
     display: 'flex',
     alignItems: 'center',
     justifyContent: 'center',
     background: isDarkBackground
-      ? 'linear-gradient(145deg, #ffffff 0%, #f0f0f0 100%)'
-      : `linear-gradient(145deg, ${lightenColor(primaryColor, 10)} 0%, ${darkenColor(primaryColor, 15)} 100%)`,
+      ? '#ffffff'
+      : primaryColor,
     color: isDarkBackground ? primaryColor : 'white',
-    boxShadow: buttonHovered
-      ? isDarkBackground
-        ? '0 8px 32px rgba(0, 0, 0, 0.15), 0 4px 12px rgba(0, 0, 0, 0.1)'
-        : `0 8px 32px ${primaryColor}50, 0 4px 12px ${primaryColor}30`
-      : isDarkBackground
-        ? '0 4px 20px rgba(0, 0, 0, 0.1), 0 2px 8px rgba(0, 0, 0, 0.05)'
-        : `0 4px 20px ${primaryColor}40, 0 2px 8px ${primaryColor}20`,
-    transform: buttonHovered ? 'scale(1.1) translateY(-2px)' : 'scale(1)',
+    boxShadow: isDarkBackground
+      ? '0 4px 20px rgba(0, 0, 0, 0.1), 0 2px 8px rgba(0, 0, 0, 0.05)'
+      : `0 4px 20px ${primaryColor}40, 0 2px 8px ${primaryColor}20`,
     ...styles.button,
     ...(isDarkBackground ? styles.buttonLight : styles.buttonDark),
   };
@@ -202,8 +173,6 @@ export const AccessibilityWidget: React.FC<AccessibilityWidgetProps> = ({
     right: 0,
     bottom: 0,
     background: 'rgba(0, 0, 0, 0.4)',
-    backdropFilter: 'blur(4px)',
-    WebkitBackdropFilter: 'blur(4px)',
     zIndex: zIndex - 1,
     ...styles.overlay,
   };
@@ -214,13 +183,13 @@ export const AccessibilityWidget: React.FC<AccessibilityWidgetProps> = ({
     width: 400,
     maxWidth: 'calc(100vw - 48px)',
     maxHeight: '85vh',
-    background: 'linear-gradient(180deg, #ffffff 0%, #fafbfc 100%)',
+    background: '#ffffff',
     borderRadius: 24,
-    boxShadow: '0 25px 50px -12px rgba(0, 0, 0, 0.25), 0 12px 24px -8px rgba(0, 0, 0, 0.1)',
+    boxShadow: '0 25px 50px -12px rgba(0, 0, 0, 0.25)',
     zIndex,
     overflow: 'hidden',
     direction: dir,
-    border: '1px solid rgba(255, 255, 255, 0.8)',
+    border: '1px solid #e2e8f0',
     ...styles.panel,
   };
 
@@ -230,34 +199,9 @@ export const AccessibilityWidget: React.FC<AccessibilityWidgetProps> = ({
     justifyContent: 'space-between',
     alignItems: 'center',
     padding: '24px 28px',
-    background: `linear-gradient(135deg, ${primaryColor} 0%, ${darkenColor(primaryColor, 20)} 100%)`,
+    background: primaryColor,
     color: 'white',
-    position: 'relative',
-    overflow: 'hidden',
     ...styles.panelHeader,
-  };
-
-  // Header decorative elements
-  const headerDecoStyle: CSSProperties = {
-    position: 'absolute',
-    top: -50,
-    right: -50,
-    width: 150,
-    height: 150,
-    borderRadius: '50%',
-    background: 'rgba(255, 255, 255, 0.1)',
-    pointerEvents: 'none',
-  };
-
-  const headerDeco2Style: CSSProperties = {
-    position: 'absolute',
-    bottom: -30,
-    left: -30,
-    width: 80,
-    height: 80,
-    borderRadius: '50%',
-    background: 'rgba(255, 255, 255, 0.05)',
-    pointerEvents: 'none',
   };
 
   const headerTitleStyle: CSSProperties = {
@@ -266,8 +210,6 @@ export const AccessibilityWidget: React.FC<AccessibilityWidgetProps> = ({
     fontWeight: 700,
     lineHeight: 1.2,
     letterSpacing: '-0.02em',
-    position: 'relative',
-    zIndex: 1,
   };
 
   const closeButtonStyle: CSSProperties = {
@@ -281,9 +223,6 @@ export const AccessibilityWidget: React.FC<AccessibilityWidgetProps> = ({
     display: 'flex',
     alignItems: 'center',
     justifyContent: 'center',
-    position: 'relative',
-    zIndex: 1,
-    backdropFilter: 'blur(10px)',
   };
 
   // Content styles
@@ -296,19 +235,12 @@ export const AccessibilityWidget: React.FC<AccessibilityWidgetProps> = ({
   };
 
   // Setting item styles
-  const getSettingItemStyle = (key: string, isToggle: boolean): CSSProperties => ({
-    background: hoveredItem === key
-      ? 'linear-gradient(145deg, #f8f9ff 0%, #f0f4ff 100%)'
-      : 'linear-gradient(145deg, #f8fafc 0%, #f1f5f9 100%)',
+  const getSettingItemStyle = (isToggle: boolean): CSSProperties => ({
+    background: '#f8fafc',
     borderRadius: 16,
     padding: '18px 20px',
     marginBottom: 12,
-    boxShadow: hoveredItem === key
-      ? `0 4px 12px ${primaryColor}15, 0 2px 4px rgba(0, 0, 0, 0.05)`
-      : '0 1px 3px rgba(0, 0, 0, 0.04)',
-    border: hoveredItem === key
-      ? `1px solid ${primaryColor}20`
-      : '1px solid transparent',
+    border: '1px solid #e2e8f0',
     cursor: 'default',
     ...(isToggle && {
       display: 'flex',
@@ -329,7 +261,7 @@ export const AccessibilityWidget: React.FC<AccessibilityWidgetProps> = ({
     width: 40,
     height: 40,
     borderRadius: 12,
-    background: `linear-gradient(145deg, ${primaryColor}15 0%, ${primaryColor}08 100%)`,
+    background: `${primaryColor}15`,
     display: 'flex',
     alignItems: 'center',
     justifyContent: 'center',
@@ -359,13 +291,10 @@ export const AccessibilityWidget: React.FC<AccessibilityWidgetProps> = ({
     background: '#ffffff',
     padding: '8px 12px',
     borderRadius: 14,
-    boxShadow: 'inset 0 1px 3px rgba(0, 0, 0, 0.06)',
   };
 
   const controlButtonStyle = (disabled: boolean): CSSProperties => ({
-    background: disabled
-      ? '#f1f5f9'
-      : `linear-gradient(145deg, ${primaryColor} 0%, ${darkenColor(primaryColor, 10)} 100%)`,
+    background: disabled ? '#f1f5f9' : primaryColor,
     border: 'none',
     borderRadius: 10,
     width: 42,
@@ -377,7 +306,6 @@ export const AccessibilityWidget: React.FC<AccessibilityWidgetProps> = ({
     display: 'flex',
     alignItems: 'center',
     justifyContent: 'center',
-    boxShadow: disabled ? 'none' : `0 2px 8px ${primaryColor}30`,
     opacity: disabled ? 0.5 : 1,
     ...styles.controlButton,
   });
@@ -411,13 +339,8 @@ export const AccessibilityWidget: React.FC<AccessibilityWidgetProps> = ({
     left: 0,
     right: 0,
     bottom: 0,
-    backgroundColor: checked
-      ? primaryColor
-      : '#e2e8f0',
+    backgroundColor: checked ? primaryColor : '#e2e8f0',
     borderRadius: 30,
-    boxShadow: checked
-      ? `inset 0 2px 4px ${darkenColor(primaryColor, 20)}40, 0 2px 8px ${primaryColor}30`
-      : 'inset 0 2px 4px rgba(0, 0, 0, 0.1)',
     ...styles.toggleTrack,
   });
 
@@ -436,7 +359,7 @@ export const AccessibilityWidget: React.FC<AccessibilityWidgetProps> = ({
   // Divider styles
   const dividerStyle: CSSProperties = {
     height: 1,
-    background: 'linear-gradient(90deg, transparent 0%, #e2e8f0 50%, transparent 100%)',
+    background: '#e2e8f0',
     margin: '20px 0',
   };
 
@@ -456,7 +379,7 @@ export const AccessibilityWidget: React.FC<AccessibilityWidgetProps> = ({
   const resetButtonStyle: CSSProperties = {
     width: '100%',
     padding: '16px 20px',
-    background: 'linear-gradient(145deg, #fef2f2 0%, #fee2e2 100%)',
+    background: '#fef2f2',
     border: '1px solid #fecaca',
     borderRadius: 14,
     color: '#dc2626',
@@ -468,7 +391,6 @@ export const AccessibilityWidget: React.FC<AccessibilityWidgetProps> = ({
     justifyContent: 'center',
     gap: 10,
     marginTop: 16,
-    boxShadow: '0 2px 8px rgba(220, 38, 38, 0.1)',
     ...styles.resetButton,
   };
 
@@ -481,9 +403,7 @@ export const AccessibilityWidget: React.FC<AccessibilityWidgetProps> = ({
     label: string
   ) => (
     <div
-      style={getSettingItemStyle(key, true)}
-      onMouseEnter={() => setHoveredItem(key)}
-      onMouseLeave={() => setHoveredItem(null)}
+      style={getSettingItemStyle(true)}
       className={classNames.settingItem}
     >
       <div style={itemHeaderStyle(true)}>
@@ -519,9 +439,7 @@ export const AccessibilityWidget: React.FC<AccessibilityWidgetProps> = ({
     incrementLabel = '+'
   ) => (
     <div
-      style={getSettingItemStyle(key, false)}
-      onMouseEnter={() => setHoveredItem(key)}
-      onMouseLeave={() => setHoveredItem(null)}
+      style={getSettingItemStyle(false)}
       className={classNames.settingItem}
     >
       <div style={itemHeaderStyle(false)}>
@@ -569,8 +487,6 @@ export const AccessibilityWidget: React.FC<AccessibilityWidgetProps> = ({
         className={`a11y-widget-button ${classNames.button || ''}`}
         style={buttonStyle}
         onClick={() => (isOpen ? handleClose() : handleOpen())}
-        onMouseEnter={() => setButtonHovered(true)}
-        onMouseLeave={() => setButtonHovered(false)}
         aria-label={buttonAriaLabel || translations.title}
         aria-expanded={isOpen}
         aria-controls={panelId}
@@ -598,8 +514,6 @@ export const AccessibilityWidget: React.FC<AccessibilityWidgetProps> = ({
             style={panelStyle}
           >
             <div className={classNames.panelHeader} style={headerStyle}>
-              <div style={headerDecoStyle} aria-hidden="true" />
-              <div style={headerDeco2Style} aria-hidden="true" />
               <h2 style={headerTitleStyle}>{translations.title}</h2>
               <button
                 type="button"
