@@ -2,7 +2,7 @@ import React, { useState, useRef, useEffect, useId } from 'react';
 import { createPortal } from 'react-dom';
 import type { CSSProperties } from 'react';
 import type { AccessibilityWidgetProps } from './types';
-import { useAccessibilitySettings, useReadingGuide, useBackgroundContrast } from './hooks';
+import { useAccessibilitySettings, useReadingGuide, useBackgroundContrast, useWidgetVisibility } from './hooks';
 import {
   AccessibilityIcon,
   TextSizeIcon,
@@ -16,6 +16,7 @@ import {
   ImageIcon,
   ResetIcon,
   CloseIcon,
+  HideWidgetIcon,
 } from './icons';
 
 // Get or create portal container
@@ -37,6 +38,7 @@ export const AccessibilityWidget: React.FC<AccessibilityWidgetProps> = ({
   classNames = {},
   position = 'bottom-right',
   storageKey = 'accessibility-settings',
+  visibilityStorageKey = 'a11y-widget-visibility',
   onSettingsChange,
   defaultSettings,
   zIndex = 9999,
@@ -71,6 +73,15 @@ export const AccessibilityWidget: React.FC<AccessibilityWidgetProps> = ({
     disablePersistence,
   });
 
+  const {
+    isVisible,
+    hideWidget,
+    showWidget,
+  } = useWidgetVisibility({
+    storageKey: visibilityStorageKey,
+    disablePersistence,
+  });
+
   useReadingGuide(settings.readingGuide, primaryColor);
 
   // Handle open/close with animation
@@ -82,18 +93,28 @@ export const AccessibilityWidget: React.FC<AccessibilityWidgetProps> = ({
     setIsOpen(false);
   };
 
-  // Handle escape key to close panel
+  // Handle escape key to close panel and keyboard shortcut to show widget
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
       if (e.key === 'Escape' && isOpen) {
         handleClose();
         buttonRef.current?.focus();
       }
+      
+      // Keyboard shortcut to show widget: Shift + Ctrl/Cmd + A
+      if (e.key === 'a' && e.shiftKey && (e.ctrlKey || e.metaKey)) {
+        e.preventDefault();
+        showWidget();
+        // Focus the button after showing
+        setTimeout(() => {
+          buttonRef.current?.focus();
+        }, 0);
+      }
     };
 
     document.addEventListener('keydown', handleKeyDown);
     return () => document.removeEventListener('keydown', handleKeyDown);
-  }, [isOpen]);
+  }, [isOpen, showWidget]);
 
   // Focus trap within panel
   useEffect(() => {
@@ -505,19 +526,21 @@ export const AccessibilityWidget: React.FC<AccessibilityWidgetProps> = ({
   return createPortal(
     <>
       {/* Floating Button */}
-      <button
-        ref={buttonRef}
-        type="button"
-        className={`a11y-widget-button ${classNames.button || ''}`}
-        style={buttonStyle}
-        onClick={() => (isOpen ? handleClose() : handleOpen())}
-        aria-label={buttonAriaLabel || translations.title}
-        aria-expanded={isOpen}
-        aria-controls={panelId}
-        aria-haspopup="dialog"
-      >
-        {buttonIcon || <AccessibilityIcon size={32} />}
-      </button>
+      {isVisible && (
+        <button
+          ref={buttonRef}
+          type="button"
+          className={`a11y-widget-button ${classNames.button || ''}`}
+          style={buttonStyle}
+          onClick={() => (isOpen ? handleClose() : handleOpen())}
+          aria-label={buttonAriaLabel || translations.title}
+          aria-expanded={isOpen}
+          aria-controls={panelId}
+          aria-haspopup="dialog"
+        >
+          {buttonIcon || <AccessibilityIcon size={32} />}
+        </button>
+      )}
 
       {/* Accessibility Panel */}
       {isOpen && (
@@ -591,6 +614,51 @@ export const AccessibilityWidget: React.FC<AccessibilityWidgetProps> = ({
                 <ResetIcon size={20} />
                 {translations.reset}
               </button>
+
+              {/* Hide Widget Button */}
+              {isVisible && (
+                <>
+                  <div style={{ ...dividerStyle, marginTop: 20 }} role="separator" aria-hidden="true" />
+                  <button
+                    type="button"
+                    style={{
+                      width: '100%',
+                      padding: '16px 20px',
+                      background: '#f1f5f9',
+                      border: '1px solid #e2e8f0',
+                      borderRadius: 14,
+                      color: '#64748b',
+                      fontWeight: 600,
+                      fontSize: 14,
+                      cursor: 'pointer',
+                      display: 'flex',
+                      alignItems: 'center',
+                      justifyContent: 'center',
+                      gap: 10,
+                      marginTop: 12,
+                    }}
+                    onClick={() => {
+                      handleClose();
+                      hideWidget();
+                    }}
+                    aria-label={translations.hideWidget || 'Hide Widget for 24 Hours'}
+                  >
+                    <HideWidgetIcon size={18} />
+                    {translations.hideWidget || 'Hide Widget for 24 Hours'}
+                  </button>
+                  <p
+                    style={{
+                      margin: '8px 0 0 0',
+                      fontSize: 12,
+                      color: '#94a3b8',
+                      textAlign: 'center',
+                      fontStyle: 'italic',
+                    }}
+                  >
+                    {translations.hideWidgetDescription || 'Press Shift + Ctrl + A to show it again anytime'}
+                  </p>
+                </>
+              )}
             </div>
           </div>
         </>

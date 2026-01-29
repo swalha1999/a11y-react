@@ -17,4 +17,6 @@ export const en: AccessibilityTranslations = {
   textAdjustments: 'Text Adjustments',
   visualAdjustments: 'Visual Adjustments',
   navigationAids: 'Navigation Aids',
+  hideWidget: 'Hide Widget for 24 Hours',
+  hideWidgetDescription: 'Press Shift + Ctrl + A to show it again anytime',
 };

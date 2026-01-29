@@ -33,6 +33,10 @@ export interface AccessibilityTranslations {
   visualAdjustments?: string;
   /** Navigation aids section label */
   navigationAids?: string;
+  /** Hide widget for 24 hours button label */
+  hideWidget?: string;
+  /** Hide widget description/help text */
+  hideWidgetDescription?: string;
 }
 
 export interface AccessibilitySettings {
@@ -108,6 +112,8 @@ export interface AccessibilityWidgetProps {
   position?: 'bottom-left' | 'bottom-right' | 'top-left' | 'top-right';
   /** Storage key for persisting settings */
   storageKey?: string;
+  /** Storage key for persisting widget visibility state */
+  visibilityStorageKey?: string;
   /** Callback when settings change */
   onSettingsChange?: (settings: AccessibilitySettings) => void;
   /** Initial settings override */

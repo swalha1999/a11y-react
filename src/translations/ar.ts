@@ -17,4 +17,6 @@ export const ar: AccessibilityTranslations = {
   textAdjustments: 'تعديلات النص',
   visualAdjustments: 'تعديلات بصرية',
   navigationAids: 'مساعدات التنقل',
+  hideWidget: 'إخفاء القطعة لمدة 24 ساعة',
+  hideWidgetDescription: 'اضغط Shift + Ctrl + A لإظهارها مرة أخرى في أي وقت',
 };
